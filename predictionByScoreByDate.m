@@ -13,6 +13,19 @@ matchDates=unique(tbl_result.Date);     %試合が行われた日付
 
 predictionFrom=datetime(2018,11,1,0,0,0)
 
+% 一時的な得点割合・勝率を記載するテーブルの作成
+teamName=tbl_teams.teamName;
+ScoreFor=zeros(size(tbl_teams.teamName));
+ScoreAgainst=zeros(size(tbl_teams.teamName));
+ScoreRatio=zeros(size(tbl_teams.teamName));
+Win=zeros(size(tbl_teams.teamName));
+Lose=zeros(size(tbl_teams.teamName));
+WinRatio=zeros(size(tbl_teams.teamName));
+tmp_tbl_ranking=table(teamName,ScoreFor,ScoreAgainst,ScoreRatio,Win,Lose,WinRatio);
+
+% categoricalを文字列にする
+strTeamName=string(tmp_tbl_ranking.teamName);
+
 for predictionTargetDate=matchDates'
 
     % if predictionTargetDate == datetime(2019,6,13,0,0,0) % デバッグ用
@@ -24,20 +37,15 @@ for predictionTargetDate=matchDates'
         idx=(tbl_result.Date< predictionTargetDate); %予測対象日以前のインデックスを取得
         tmp_tbl_result=tbl_result(idx,:);
         
+        % 初期化の実施
+        tmp_tbl_ranking.ScoreFor=zeros(size(tbl_teams.teamName));
+        tmp_tbl_ranking.ScoreAgainst=zeros(size(tbl_teams.teamName));
+        tmp_tbl_ranking.ScoreRatio=zeros(size(tbl_teams.teamName));
+        tmp_tbl_ranking.Win=zeros(size(tbl_teams.teamName));
+        tmp_tbl_ranking.Lose=zeros(size(tbl_teams.teamName));
+        tmp_tbl_ranking.WinRatio=zeros(size(tbl_teams.teamName));
+
         % TODO:指標(その時点での各チームの勝率)を計算する
-
-        % 一時的な得点割合・勝率を記載するテーブルの作成
-        teamName=tbl_teams.teamName;
-        ScoreFor=zeros(size(tbl_teams.teamName));
-        ScoreAgainst=zeros(size(tbl_teams.teamName));
-        ScoreRatio=zeros(size(tbl_teams.teamName));
-        Win=zeros(size(tbl_teams.teamName));
-        Lose=zeros(size(tbl_teams.teamName));
-        WinRatio=zeros(size(tbl_teams.teamName));
-        tmp_tbl_ranking=table(teamName,ScoreFor,ScoreAgainst,ScoreRatio,Win,Lose,WinRatio);
-
-        % categoricalを文字列にする
-        strTeamName=string(tmp_tbl_ranking.teamName);
 
         for j=1:size(tmp_tbl_result.Home)
             homeIdx=contains(strTeamName,string(tmp_tbl_result.Home(j,:)));
