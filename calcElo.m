@@ -37,6 +37,8 @@ tbl_teams.Division=categorical(tbl_teams.Division);
 tbl_teams.Abb=categorical(tbl_teams.Abb);
 
 %% Eloレーティングの計算
+
+% レギュラーシーズンの結果を抽出
 tbl_result_regular=tbl_result(tbl_result.isRegular==1,:);
 r=1500*ones(size(tbl_teams,1),1); %レーティングベクトル
 K=16;
